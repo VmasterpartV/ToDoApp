@@ -1,5 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Inject, OnInit } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { Task } from 'src/app/interfaces/tasks';
 
 @Component({
   selector: 'app-task-form',
@@ -8,21 +10,25 @@ import { FormGroup, FormControl, Validators } from '@angular/forms';
 })
 export class TaskFormComponent {
   taskForm: FormGroup;
+  newTask: boolean = true;
 
-  constructor() { }
+  constructor(private dialogRef: MatDialogRef<TaskFormComponent>, @Inject(MAT_DIALOG_DATA) public task: Task) {
+    if (task.name) {
+      this.newTask = false;
+    }
+    this.taskForm = new FormGroup({
+      name: new FormControl(task.name, Validators.required),
+    });
+  }
 
   ngOnInit(): void {
-    this.taskForm = new FormGroup({
-      taskName: new FormControl('', Validators.required),
-      // Puedes agregar más campos aquí si es necesario
-    });
   }
 
   onSubmit() {
     if (this.taskForm.valid) {
-      // Aquí puedes enviar los datos del formulario
-      // o realizar otras acciones, como agregar la tarea a la lista
-      console.log(this.taskForm.value);
+      const task: Task = this.taskForm.value;
+      this.taskForm.reset();
+      this.dialogRef.close(task);
     } else {
       // Marcar los campos inválidos si es necesario
       this.taskForm.markAllAsTouched();

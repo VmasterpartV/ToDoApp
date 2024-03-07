@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { CdkDragDrop, moveItemInArray, transferArrayItem } from '@angular/cdk/drag-drop';
 import { TasksService } from 'src/app/services/tasks/tasks.service';
 import { TaskList, Task } from 'src/app/interfaces/tasks';
+import {MatDialog} from '@angular/material/dialog';
+import { TaskFormComponent } from '../task-form/task-form.component';
 
 @Component({
   selector: 'app-task-list',
@@ -11,11 +13,18 @@ import { TaskList, Task } from 'src/app/interfaces/tasks';
 export class TaskListComponent implements OnInit {
   
   table: TaskList[] = [];
-  todo = [];
-  inProgress = [];
-  done = [];
+  emptyTask: Task = {
+    name: '',
+    list: '',
+    description: '',
+    dueDate: new Date()
+  };
+  activeList: TaskList = {
+    name: '',
+    tasks: []
+  };
 
-  constructor(private tasksService: TasksService) { }
+  constructor(private tasksService: TasksService, public dialog: MatDialog) { }
 
   ngOnInit(): void {
     this.tasksService.taskTable$.subscribe(taskTable => {
@@ -42,5 +51,37 @@ export class TaskListComponent implements OnInit {
 
   getTableIdsExcept(currentId: string): string[] {
     return this.table.map(list => list.name).filter(id => id !== currentId);
+  }
+
+  saveTask(list: TaskList, task: Task): void {
+    list.tasks.push(task);
+    this.tasksService.updateTaskTable(this.table);
+    this.emptyTask = {
+      name: '',
+      list: '',
+      description: '',
+      dueDate: new Date()
+    };
+  }
+
+  openDialog(task: Task, list: TaskList) {
+    console.log(task);
+    const dialogRef = this.dialog.open(TaskFormComponent, {
+      data: task
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      console.log('The dialog was closed');
+      console.log(result);
+      // Save or update the task
+      if (result) {
+        if (result.name) {
+          task.name = result.name;
+          task.description = result.description;
+          task.dueDate = result.dueDate;
+          this.saveTask(list, task);
+        }
+      }
+    });
   }
 }

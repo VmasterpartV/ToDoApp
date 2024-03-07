@@ -13,36 +13,15 @@ export class TasksService {
   table: TaskList[] = [
     {
       name: 'To Do',
-      tasks: [
-        {
-          name: 'Task 1',
-          list: 'To Do',
-          description: 'This is a description for task 1',
-          dueDate: new Date()
-        }
-      ]
+      tasks: []
     },
     {
       name: 'In Progress',
-      tasks: [
-        {
-          name: 'Task 2',
-          list: 'In Progress',
-          description: 'This is a description for task 2',
-          dueDate: new Date()
-        }
-      ]
+      tasks: []
     },
     {
       name: 'In Review',
-      tasks: [
-        {
-          name: 'Task 3',
-          list: 'Done',
-          description: 'This is a description for task 3',
-          dueDate: new Date()
-        }
-      ]
+      tasks: []
     }
   ];
 

@@ -1,11 +1,13 @@
-<form [formGroup]="taskForm" (ngSubmit)="onSubmit()">
-    <div class="form-group">
-        <label for="taskName">Tarea</label>
-        <input type="text" formControlName="taskName" class="form-control">
-        <div *ngIf="taskForm.get('taskName').invalid && taskForm.get('taskName').touched" class="text-danger">
-            Debes ingresar una tarea.
+<div class="card p-4">
+    <form [formGroup]="taskForm" (ngSubmit)="onSubmit()">
+        <div class="form-group">
+            <label for="name">Tarea</label>
+            <input type="text" formControlName="name" class="form-control">
+            <div *ngIf="taskForm.get('name').invalid && taskForm.get('name').touched" class="text-danger">
+                Debes ingresar una tarea.
+            </div>
         </div>
-    </div>
-    <!-- Puedes agregar más campos aquí si es necesario -->
-    <button type="submit" class="btn btn-primary">Agregar tarea</button>
-</form>
+        <!-- Puedes agregar más campos aquí si es necesario -->
+        <button type="submit" class="btn btn-primary">{{ newTask ? 'Agregar' : 'Guardar' }}</button>
+    </form>
+</div>
