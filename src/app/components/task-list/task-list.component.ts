@@ -15,9 +15,8 @@ export class TaskListComponent implements OnInit {
   table: TaskList[] = [];
   emptyTask: Task = {
     name: '',
-    list: '',
     description: '',
-    dueDate: new Date()
+    dueDate: null
   };
   activeList: TaskList = {
     name: '',
@@ -58,16 +57,27 @@ export class TaskListComponent implements OnInit {
     this.tasksService.updateTaskTable(this.table);
     this.emptyTask = {
       name: '',
-      list: '',
       description: '',
       dueDate: new Date()
     };
   }
 
+  updateTask(list: TaskList, task: Task): void {
+    list.tasks = list.tasks.map(t => {
+      if (t.name === task.name) {
+        t = task;
+      }
+      return t;
+    });
+    this.tasksService.updateTaskTable(this.table);
+  }
+
   openDialog(task: Task, list: TaskList) {
     console.log(task);
     const dialogRef = this.dialog.open(TaskFormComponent, {
-      data: task
+      data: task,
+      width: '300px',
+      maxHeight: '90vh'
     });
 
     dialogRef.afterClosed().subscribe(result => {
@@ -76,10 +86,15 @@ export class TaskListComponent implements OnInit {
       // Save or update the task
       if (result) {
         if (result.name) {
+          const update = task.name ? true : false;
           task.name = result.name;
           task.description = result.description;
           task.dueDate = result.dueDate;
-          this.saveTask(list, task);
+          if (!update) {
+            this.saveTask(list, task);
+          } else {
+            this.updateTask(list, task);
+          }
         }
       }
     });

@@ -5,12 +5,20 @@
             <div cdkDropList [id]="list.name" [cdkDropListData]="list.tasks"
                 [cdkDropListConnectedTo]="getTableIdsExcept(list.name)" class="card p-3 example-list bg-light"
                 (cdkDropListDropped)="drop($event)">
-                <div class="card-body example-box mb-2" *ngFor="let task of list.tasks" cdkDrag (click)="openDialog(task, list)">{{task.name}}</div>
-                <button class="full-width" mat-raised-button color="primary" (click)="openDialog(emptyTask, list)">
-                    <mat-icon>add</mat-icon>
-                    <span>Add Task</span>
-                </button>
+                <div class="card-body example-box mb-2" *ngFor="let task of list.tasks" cdkDrag
+                    (click)="openDialog(task, list)">
+                    <div>
+                        <h4 class="card-title mb-1">{{task.name}}</h4>
+                        <p class="card-text mb-1">{{task.description}}</p>
+                        <p class="card-text text-muted"><strong>Due Date:</strong> {{task.dueDate | date}}</p>
+                    </div>
+                    <mat-checkbox class="checkbox" *ngIf="list.name === 'Completed'" [checked]="true" color="primary"></mat-checkbox>
+                </div>
             </div>
+            <button class="full-width mt-2" mat-raised-button color="primary" (click)="openDialog(emptyTask, list)">
+                <mat-icon>add</mat-icon>
+                <span>Add Task</span>
+            </button>
         </div>
     </div>
 </div>

@@ -1,6 +1,5 @@
 export interface Task {
     name: string;
-    list: string;
     description: string;
     dueDate: Date;
 }

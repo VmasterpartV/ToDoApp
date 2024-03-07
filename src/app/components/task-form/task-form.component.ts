@@ -18,6 +18,8 @@ export class TaskFormComponent {
     }
     this.taskForm = new FormGroup({
       name: new FormControl(task.name, Validators.required),
+      description: new FormControl(task.description, Validators.required),
+      dueDate: new FormControl(task.dueDate, Validators.required),
     });
   }
 

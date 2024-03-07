@@ -20,7 +20,7 @@ export class TasksService {
       tasks: []
     },
     {
-      name: 'In Review',
+      name: 'Completed',
       tasks: []
     }
   ];
